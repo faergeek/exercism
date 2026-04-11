@@ -8,4 +8,4 @@ def is_armstrong_number(number: int):
 
     n_digits = len(digits)
 
-    return sum([d ** n_digits for d in digits]) == number
+    return sum([digit ** n_digits for digit in digits]) == number
