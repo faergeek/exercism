@@ -8,7 +8,7 @@ function Hamming.compute(a, b)
 	local result = 0
 
 	for i = 1, #a do
-		if string.sub(a, i, i) ~= string.sub(b, i, i) then
+		if a:sub(i, i) ~= b:sub(i, i) then
 			result = result + 1
 		end
 	end
