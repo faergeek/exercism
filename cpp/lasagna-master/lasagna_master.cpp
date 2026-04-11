@@ -25,7 +25,7 @@ void addSecretIngredient(std::vector<std::string> &ingredients, const std::vecto
 }
 
 void addSecretIngredient(std::vector<std::string> &ingredients, const std::string &secretIngredient) {
-  ingredients[ingredients.size() - 1] = secretIngredient;
+  ingredients.back() = secretIngredient;
 }
 
 std::vector<double> scaleRecipe(const std::vector<double> &quantities, int numberOfPortions) {
