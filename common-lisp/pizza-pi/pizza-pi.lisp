@@ -12,8 +12,8 @@
   (sqrt (/ (* 40 sauce) (* 3 pi))))
 
 (defun pizzas-per-cube (cube-size diameter)
-  (floor (/ (* 2 cube-size cube-size cube-size)
-            (* 3 pi diameter diameter))))
+  (floor (/ (* 2 (expt cube-size 3))
+            (* 3 pi (expt diameter 2)))))
 
 (defun fair-share-p (pizzas friends)
   (= 0 (rem (* pizzas 8) friends)))
