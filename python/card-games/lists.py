@@ -56,8 +56,10 @@ def approx_average_is_average(hand: list[int]):
     actual_average = card_average(hand)
 
     return (
-        (hand[0] + hand[-1]) / 2 == actual_average or
-        hand[len(hand) // 2] == actual_average
+        actual_average in {
+            (hand[0] + hand[-1]) / 2,
+            hand[len(hand) // 2]
+        }
     )
 
 
