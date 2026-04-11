@@ -17,13 +17,13 @@ let right node =
   | Leaf -> Error "Leaf has no right"
   | Node node -> Ok node.right
 
-let rec insert new_value node =
+let rec insert value node =
   match node with
-  | Leaf -> Node { left = Leaf; value = new_value; right = Leaf }
+  | Leaf -> Node { left = Leaf; value; right = Leaf }
   | Node node ->
-      if new_value > node.value then
-        Node { node with right = insert new_value node.right }
-      else Node { node with left = insert new_value node.left }
+      if value > node.value then
+        Node { node with right = insert value node.right }
+      else Node { node with left = insert value node.left }
 
 let rec to_list node =
   match node with
