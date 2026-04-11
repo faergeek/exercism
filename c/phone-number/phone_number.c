@@ -1,5 +1,5 @@
 #include "phone_number.h"
-#include <assert.h>
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,13 +11,16 @@ char *phone_number_clean(const char *input) {
 
   char *result = malloc(EXPECTED_N_DIGITS);
   memset(result, '0', EXPECTED_N_DIGITS);
+  if (len < EXPECTED_N_DIGITS) {
+    return result;
+  }
 
   bool valid = true;
   size_t n_digits = 0;
   for (size_t i = 0; i < len; i++) {
     char c = input[i];
 
-    if (c < '0' || c > '9' || (n_digits == 0 && c == '1')) {
+    if (!isdigit(c) || (n_digits == 0 && c == '1')) {
       continue;
     }
 
