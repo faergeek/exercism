@@ -11,5 +11,6 @@ char *reverse(const char *value) {
     result[i] = value[last_index - i];
   }
 
+  result[len] = '\0';
   return result;
 }
