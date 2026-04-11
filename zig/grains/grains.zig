@@ -9,7 +9,7 @@ pub fn square(index: usize) ChessboardError!u64 {
 
     var i: usize = 1;
     while (i < index) : (i += 1) {
-        result *= 2;
+        result <<= 2;
     }
 
     return result;
