@@ -1,28 +1,20 @@
 /// Check a Luhn checksum.
 pub fn is_valid(code: &str) -> bool {
-    let mut digits = Vec::new();
+    code.as_bytes()
+        .iter()
+        .filter(|byte| !byte.is_ascii_whitespace())
+        .try_rfold((0, 0), |(sum, count), &byte| {
+            (byte as char).to_digit(10).map(|mut digit| {
+                if count % 2 == 1 {
+                    digit = digit * 2;
 
-    for &byte in code.as_bytes().iter().rev() {
-        if byte == b' ' {
-            continue;
-        }
+                    if digit > 9 {
+                        digit -= 9;
+                    }
+                }
 
-        if byte < b'0' || byte > b'9' {
-            return false;
-        }
-
-        let mut d = (byte - b'0') as u64;
-
-        if digits.len() % 2 == 1 {
-            d = d * 2;
-
-            if d > 9 {
-                d -= 9;
-            }
-        }
-
-        digits.push(d);
-    }
-
-    return digits.len() > 1 && (digits.iter().sum::<u64>()) % 10 == 0;
+                (sum + digit, count + 1)
+            })
+        })
+        .map_or(false, |(sum, count)| count > 1 && sum % 10 == 0)
 }
