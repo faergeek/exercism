@@ -1,20 +1,17 @@
 #include "pangram.h"
-#include <ctype.h>
-#include <stdint.h>
-#include <string.h>
 
 bool is_pangram(const char *sentence) {
-  if (sentence == NULL) {
+  if (!sentence)
     return false;
-  }
 
-  size_t len = strlen(sentence);
-  int_fast32_t sentence_flags = 0;
-  for (size_t i = 0; i < len; i++) {
-    char ch = sentence[i];
+  int sentence_flags = 0;
+  for (; *sentence != '\0'; sentence++) {
+    char ch = *sentence;
 
-    if (isalpha(ch)) {
-      sentence_flags |= 1 << (tolower(ch) - 'a');
+    if ('a' <= ch && ch <= 'z') {
+      sentence_flags |= 1 << (ch - 'a');
+    } else if ('A' <= ch && ch <= 'Z') {
+      sentence_flags |= 1 << (ch - 'A');
     }
   }
 
