@@ -2,9 +2,9 @@ use std::collections::HashSet;
 
 pub fn is_pangram(sentence: &str) -> bool {
     sentence
+        .to_ascii_lowercase()
         .chars()
-        .map(|c| c.to_ascii_lowercase())
-        .filter(|c| c >= &'a' && c <= &'z')
+        .filter(|c| c.is_ascii_alphabetic())
         .collect::<HashSet<_>>()
         .len()
         == 26
