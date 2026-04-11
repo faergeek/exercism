@@ -1,17 +1,16 @@
 type robot = { mutable name : string }
 
-module StringSet = Set.Make (String)
-
-let used_names = ref StringSet.empty
+let int_in_range min max = min + Random.int (max - min + 1)
+let char_in_range min max = Char.(int_in_range (code min) (code max) |> chr)
 
 let generate_random_name () =
   Random.self_init ();
-  let char_in_range min max =
-    Random.int_in_range ~min:(Char.code min) ~max:(Char.code max) |> Char.chr
-  in
-  let char () = char_in_range 'A' 'Z' and digit () = char_in_range '0' '9' in
-  [ char (); char (); digit (); digit (); digit () ]
-  |> List.to_seq |> String.of_seq
+  let c () = char_in_range 'A' 'Z' and d () = char_in_range '0' '9' in
+  [ c; c; d; d; d ] |> List.map (fun f -> f ()) |> List.to_seq |> String.of_seq
+
+module StringSet = Set.Make (String)
+
+let used_names = ref StringSet.empty
 
 let rec generate_unique_name () =
   let new_name = generate_random_name () in
