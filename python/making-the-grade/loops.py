@@ -1,9 +1,6 @@
 """Functions for organizing and calculating student exam scores."""
 
 
-import enum
-
-
 def round_scores(student_scores: list[float | int]):
     """Round all provided student scores.
 
