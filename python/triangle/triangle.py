@@ -1,8 +1,8 @@
 def is_a_triangle(sides: list[int]):
-    return all([
-        x > 0 and x <= sides[(i + 1) % 3] + sides[(i + 2) % 3]
-        for i, x in enumerate(sides)
-    ])
+    return all(
+        0 < length <= sides[(index + 1) % 3] + sides[(index + 2) % 3]
+        for index, length in enumerate(sides)
+    )
 
 def equilateral(sides: list[int]):
     return is_a_triangle(sides) and sides[0] == sides[1] and sides[1] == sides[2]
