@@ -1,10 +1,10 @@
 def is_armstrong_number(number: int):
     digits: list[int] = []
 
-    n = number
-    while n > 0:
-        digits.append(n % 10)
-        n //= 10
+    remainder = number
+    while remainder > 0:
+        digits.append(remainder % 10)
+        remainder //= 10
 
     n_digits = len(digits)
 
