@@ -1,5 +1,4 @@
 #include "grade_school.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
