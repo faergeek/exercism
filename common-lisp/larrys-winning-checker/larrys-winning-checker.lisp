@@ -13,15 +13,7 @@
   (make-array '(3 3) :initial-element nil))
 
 (defun make-board-from-list (list)
-  (loop with result = (make-empty-board)
-        for i from 0 to (1- (array-dimension result 0))
-        for rows = list then (cdr rows)
-        for row = (car rows)
-        do (loop for j from 0 to (1- (array-dimension result 1))
-                for els = row then (cdr els)
-                for el = (car els)
-                do (setf (aref result i j) el))
-        finally (return result)))
+  (make-array '(3 3) :initial-contents list))
 
 (defun all-the-same-p (row-or-col)
   (and (eq (aref row-or-col 0) (aref row-or-col 1))
