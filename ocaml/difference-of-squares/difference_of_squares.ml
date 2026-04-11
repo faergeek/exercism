@@ -3,13 +3,8 @@ let sum_list = List.fold_left (fun s x -> s + x) 0
 let square x = x * x
 
 let square_of_sum n =
-  let list = init_list n in
-  let sum = sum_list list in
+  let sum = init_list n |> sum_list in
   sum * sum
 
-let sum_of_squares n =
-  let list = init_list n in
-  let squares = List.map square list in
-  sum_list squares
-
+let sum_of_squares n = init_list n |> List.map square |> sum_list
 let difference_of_squares n = square_of_sum n - sum_of_squares n
