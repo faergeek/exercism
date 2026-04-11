@@ -1,9 +1,7 @@
 open Base
 
 let sort_chars str =
-  let array = String.to_array str in
-  Array.sort array ~compare:Char.compare;
-  String.of_array array
+  String.to_list str |> List.sort ~compare:Char.compare |> String.of_char_list
 
 let anagrams target candidates =
   let open String in
