@@ -1,10 +1,10 @@
 return function(s)
 	local rows = {}
 
-	for line in string.gmatch(s, "([^\n]*)\n?") do
+	for line in s:gmatch("([^\n]*)\n?") do
 		local row = {}
 
-		for digit in string.gmatch(line, "(%d+)%s*") do
+		for digit in line:gmatch("(%d+)%s*") do
 			table.insert(row, tonumber(digit, 10))
 		end
 
