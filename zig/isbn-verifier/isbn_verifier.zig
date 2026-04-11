@@ -1,30 +1,18 @@
-const std = @import("std");
-
 pub fn isValidIsbn10(s: []const u8) bool {
-    var numbers: [10]u8 = undefined;
+    var sum: u16 = 0;
 
     var i: u8 = 0;
     for (s) |c| {
-        var n: u8 = switch (c) {
+        var digit: u8 = switch (c) {
             '0'...'9' => c - '0',
             'X' => if (i == 9) 10 else return false,
             '-' => continue,
             else => return false,
         };
 
-        if (i >= 10) return false;
-
-        numbers[i] = n;
+        sum += (10 - i) * digit;
         i += 1;
     }
 
-    if (i != 10) return false;
-
-    var sum: u64 = 0;
-    i = 0;
-    while (i < 10) : (i += 1) {
-        sum += numbers[i] * (10 - i);
-    }
-
-    return sum % 11 == 0;
+    return i == 10 and sum % 11 == 0;
 }
