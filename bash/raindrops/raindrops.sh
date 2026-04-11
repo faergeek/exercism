@@ -1,20 +1,7 @@
 #!/usr/bin/env bash
 
-n="${1}"
-output=
+[ $(($1 % 3)) -eq 0 ] && result+="Pling"
+[ $(($1 % 5)) -eq 0 ] && result+="Plang"
+[ $(($1 % 7)) -eq 0 ] && result+="Plong"
 
-if [ $((n % 3)) -eq 0 ]; then
-  output="${output}$(printf "Pling")"
-fi
-
-if [ $((n % 5)) -eq 0 ]; then
-  output="${output}$(printf "Plang")"
-fi
-
-if [ $((n % 7)) -eq 0 ]; then
-  output="${output}$(printf "Plong")"
-fi
-
-output=${output:-$n}
-
-echo "$output"
+echo "${result:-$1}"
