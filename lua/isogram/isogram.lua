@@ -1,14 +1,12 @@
 return function(s)
 	local letters = {}
 
-	for letter in string.gmatch(s, "%a") do
-		local lowercase_letter = string.lower(letter)
-
-		if letters[lowercase_letter] then
+	for l in s:lower():gmatch("%a") do
+		if letters[l] then
 			return false
 		end
 
-		letters[lowercase_letter] = true
+		letters[l] = true
 	end
 
 	return true
