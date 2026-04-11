@@ -22,5 +22,4 @@
   (or (gethash k ht) 0))
 
 (defun remove-player (ht k)
-  (if (nth-value 1 (gethash k ht))
-    (setf (gethash k ht) nil)))
+  (remhash k ht))
