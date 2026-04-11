@@ -5,24 +5,22 @@
 namespace simple_linked_list {
 
 std::size_t List::size() const {
-    std::size_t result{0};
-
-    auto el = head;
-    while (el) {
-        result++;
-        el = el->next;
-    }
-
-    return result;
+    return current_size;
 }
 
 void List::push(int entry) {
     auto old_head = head;
     head = new Element(entry);
     head->next = old_head;
+    current_size++;
 }
 
 int List::pop() {
+    if (current_size == 0) {
+        throw std::length_error("Can't pop from an empty list");
+    }
+
+    current_size--;
     auto el = head;
     head = el->next;
     auto data = el->data;
