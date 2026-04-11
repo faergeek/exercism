@@ -7,10 +7,10 @@
 (defun categorize-number (pair n)
   (let ((odds (car pair))
         (evens (cdr pair)))
-    (if (zerop (mod n 2))
+    (if (evenp n)
       (setf evens (cons n evens))
       (setf odds (cons n odds)))
     (cons odds evens)))
 
 (defun partition-numbers (numbers)
-  (reduce #'categorize-number numbers :initial-value '(() . ())))
+  (reduce #'categorize-number numbers :initial-value '(nil)))
