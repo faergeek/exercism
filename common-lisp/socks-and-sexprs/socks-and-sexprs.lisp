@@ -27,6 +27,3 @@
 ;; Evaluates to the 'rest' of the CONS
 (defun rest-of-it (cons) (cdr cons))
   ;; put the code to get the rest of CONS here
-
-;; (load "socks-and-sexprs-test")
-(socks-and-sexprs-test:run-tests)
