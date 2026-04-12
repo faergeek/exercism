@@ -9,9 +9,7 @@ void give_new_artifact(human &human, const std::string &artifact_name) {
 
 void exchange_artifacts(std::unique_ptr<artifact> &a,
                         std::unique_ptr<artifact> &b) {
-  auto &temp = a;
-  b = std::move(a);
-  a = std::move(temp);
+  std::swap(a, b);
 }
 
 void manifest_power(human &human, const std::string &power_name) {
