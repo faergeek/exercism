@@ -29,10 +29,10 @@ def compare_records(azara_record: tuple[str, str], rui_record: tuple[str, tuple[
     :return: bool - do the coordinates match?
     """
 
-    a = azara_record[1]
-    b = rui_record[1][0] + rui_record[1][1]
+    coordinate_a = azara_record[1]
+    coordinate_b = rui_record[1][0] + rui_record[1][1]
 
-    return a == b
+    return coordinate_a == coordinate_b
 
 
 def create_record(azara_record: tuple[str, str], rui_record: tuple[str, tuple[str, str], str]):
@@ -42,9 +42,9 @@ def create_record(azara_record: tuple[str, str], rui_record: tuple[str, tuple[st
     :param rui_record: tuple - a (location, coordinate, quadrant) trio.
     :return: tuple or str - the combined record (if compatible), or the string "not a match" (if incompatible).
     """
-    
+
     if not compare_records(azara_record, rui_record):
-        return "not a match"
+        return 'not a match'
 
     return azara_record + rui_record
 
