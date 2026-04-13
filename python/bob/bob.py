@@ -6,7 +6,7 @@ def response(hey_bob: str):
 
     has_letters = False
     for letter in normalized:
-        if letter >= 'A' and letter <= 'Z':
+        if "A" <= letter <= "Z":
             has_letters = True
             break
 
