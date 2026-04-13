@@ -10,7 +10,7 @@ def response(hey_bob: str):
             has_letters = True
             break
 
-    is_a_question = normalized[-1] == '?'
+    is_a_question = normalized[-1] == "?"
 
     if has_letters and normalized == normalized.upper():
         if is_a_question:
