@@ -10,13 +10,13 @@ def translate_word(word: str):
 
     # Rule 3
     qu_pos = word.find("qu")
-    if qu_pos != -1 and all([is_consonant(char) for char in word[0:qu_pos]]):
+    if qu_pos != -1 and all(is_consonant(char) for char in word[0:qu_pos]):
         split_at = qu_pos + 2
         return f"{word[split_at:]}{word[0:split_at]}ay"
 
     # Rule 4
     y_pos = word.find("y")
-    if y_pos > 0 and all([is_consonant(char) for char in word[0:y_pos]]):
+    if y_pos > 0 and all(is_consonant(char) for char in word[0:y_pos]):
         return f"{word[y_pos:]}{word[0:y_pos]}ay"
 
     # Rule 2
