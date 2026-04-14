@@ -27,4 +27,4 @@ def translate_word(word: str):
     return f"{word[split_at:]}{word[0:split_at]}ay"
 
 def translate(text: str):
-    return " ".join([translate_word(word) for word in text.split()])
+    return " ".join(translate_word(word) for word in text.split())
