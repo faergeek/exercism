@@ -7,9 +7,7 @@
 
 namespace alphametics {
 
-typedef std::unordered_map<char, int> solution;
-
-std::optional<solution> solve(const std::string &input);
+std::optional<std::unordered_map<char, int>> solve(const std::string &input);
 
 } // namespace alphametics
 
