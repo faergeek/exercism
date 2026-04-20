@@ -117,7 +117,7 @@ impl Puzzle {
         }
     }
 
-    fn is_valid(&self, permutation: &Vec<isize>) -> bool {
+    fn is_valid(&self, permutation: &[isize]) -> bool {
         let mut sum = 0;
         let mut cell_index = 0;
         for column in 0..self.max_term_len {
@@ -150,16 +150,16 @@ impl Puzzle {
             sum /= 10;
         }
 
-        return sum == 0;
+        sum == 0
     }
 
     // Steinhaus–Johnson–Trotter algorithm with Even's speedup
     // https://en.wikipedia.org/wiki/Steinhaus%E2%80%93Johnson%E2%80%93Trotter_algorithm#Even's_speedup
     fn permute(
         &self,
-        permutation: &mut Vec<isize>,
-        directions: &mut Vec<isize>,
-        indices: &mut Vec<usize>,
+        permutation: &mut [isize],
+        directions: &mut [isize],
+        indices: &mut [usize],
     ) -> bool {
         let mut max_i: isize = -1;
         let mut max_n: isize = -1;
@@ -179,17 +179,9 @@ impl Puzzle {
         let direction = directions[src_i];
         let dst_i = (src_i as isize + direction) as usize;
 
-        let mut temp = permutation[indices[src_i]];
-        permutation[indices[src_i]] = permutation[indices[dst_i]];
-        permutation[indices[dst_i]] = temp;
-
-        temp = indices[src_i] as isize;
-        indices[src_i] = indices[dst_i];
-        indices[dst_i] = temp as usize;
-
-        temp = directions[src_i];
-        directions[src_i] = directions[dst_i];
-        directions[dst_i] = temp;
+        permutation.swap(indices[src_i], indices[dst_i]);
+        indices.swap(src_i, dst_i);
+        directions.swap(src_i, dst_i);
 
         if dst_i == 0
             || dst_i == self.letters.len() - 1
@@ -208,7 +200,7 @@ impl Puzzle {
             }
         }
 
-        return true;
+        true
     }
 
     fn search(
