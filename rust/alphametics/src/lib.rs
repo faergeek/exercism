@@ -224,8 +224,8 @@ impl Puzzle {
         let mut permutation = solution.to_vec();
         let mut indices: Vec<usize> = vec![0; self.letters.len()];
         let mut j = 0;
-        for i in 0..permutation.len() {
-            if permutation[i] >= 0 {
+        for (i, value) in permutation.iter().enumerate() {
+            if *value >= 0 {
                 indices[j] = i;
                 j += 1;
             }
