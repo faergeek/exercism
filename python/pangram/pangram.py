@@ -1,4 +1,6 @@
-ALPHABET = set(chr(codepoint) for codepoint in range(ord('a'), ord('z') + 1))
+from string import ascii_lowercase
+
+ALPHABET = set(ascii_lowercase)
 
 def is_pangram(sentence: str):
-    return len(ALPHABET - set(sentence.lower())) == 0
+    return ALPHABET.issubset(sentence.lower())
