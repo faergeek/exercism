@@ -1,6 +1,6 @@
-from string import digits
+import string
 
-valid_characters = set(digits).union({"-", "X"})
+valid_characters = set(string.digits).union({"-", "X"})
 
 
 def is_valid(isbn: str):
