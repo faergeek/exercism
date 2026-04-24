@@ -1,18 +1,18 @@
 #include "pangram.h"
-#include <set>
+#include <bitset>
 
 namespace pangram {
 
 bool is_pangram(const std::string &input) {
-  std::set<char> letters;
+  std::bitset<'z' - 'a' + 1> letters;
 
   for (const auto c : input) {
     if (isalpha(c)) {
-      letters.insert(tolower(c));
+      letters.set(tolower(c) - 'a');
     }
   }
 
-  return letters.size() == ('z' - 'a' + 1);
+  return letters.all();
 }
 
 } // namespace pangram
