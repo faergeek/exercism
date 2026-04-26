@@ -1,21 +1,3 @@
-def calculate_factors(dividend: int):
-    if dividend != 1:
-        yield 1
-
-    divisor = 2
-    quotient, remainder = divmod(dividend, divisor)
-
-    while quotient >= divisor:
-        if remainder == 0:
-            yield divisor
-
-            if quotient != divisor:
-                yield quotient
-
-        divisor += 1
-        quotient, remainder = divmod(dividend, divisor)
-
-
 def classify(number: int):
     """A perfect number equals the sum of its positive divisors.
 
@@ -26,10 +8,20 @@ def classify(number: int):
     if number < 1:
         raise ValueError("Classification is only possible for positive integers.")
 
-    aliquot_sum = sum(calculate_factors(number))
+    aliquot_sum = 0 if number == 1 else 1
+    divisor = 2
+    quotient, remainder = divmod(number, divisor)
+    while quotient >= divisor:
+        if remainder == 0:
+            aliquot_sum += divisor
 
-    if number < aliquot_sum:
-        return "abundant"
+            if quotient != divisor:
+                aliquot_sum += quotient
+            if aliquot_sum > number:
+                return "abundant"
+
+        divisor += 1
+        quotient, remainder = divmod(number, divisor)
 
     if number > aliquot_sum:
         return "deficient"
