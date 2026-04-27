@@ -18,13 +18,13 @@ EQUAL = "equal"
 UNEQUAL = "unequal"
 
 
-def index_of[Item](list: list[Item], pattern: list[Item]):
+def index_of[Item](haystack: list[Item], pattern: list[Item]):
     result = -1
-    for index, _char in enumerate(list):
+    for index in range(len(haystack)):
         result = index
 
         for pattern_index, pattern_char in enumerate(pattern):
-            if list[index + pattern_index] != pattern_char:
+            if haystack[index + pattern_index] != pattern_char:
                 result = -1
                 break
 
