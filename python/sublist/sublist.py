@@ -18,13 +18,13 @@ EQUAL = "equal"
 UNEQUAL = "unequal"
 
 
-def index_of[Item](super: list[Item], sub: list[Item]):
+def index_of[Item](list: list[Item], pattern: list[Item]):
     result = -1
-    for super_index, _ in enumerate(super):
-        result = super_index
+    for index, _char in enumerate(list):
+        result = index
 
-        for sub_index, sub_char in enumerate(sub):
-            if super[super_index + sub_index] != sub_char:
+        for pattern_index, pattern_char in enumerate(pattern):
+            if list[index + pattern_index] != pattern_char:
                 result = -1
                 break
 
