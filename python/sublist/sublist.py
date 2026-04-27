@@ -18,13 +18,13 @@ EQUAL = "equal"
 UNEQUAL = "unequal"
 
 
-def index_of[Item](superlist: list[Item], sublist: list[Item]):
+def index_of[Item](super: list[Item], sub: list[Item]):
     result = -1
-    for i in range(len(superlist)):
-        result = i
+    for super_index, _ in enumerate(super):
+        result = super_index
 
-        for j in range(len(sublist)):
-            if superlist[i + j] != sublist[j]:
+        for sub_index, sub_char in enumerate(sub):
+            if super[super_index + sub_index] != sub_char:
                 result = -1
                 break
 
@@ -36,7 +36,11 @@ def index_of[Item](superlist: list[Item], sublist: list[Item]):
 
 def sublist[Item](list_one: list[Item], list_two: list[Item]):
     if len(list_one) == len(list_two):
-        return EQUAL if all(a == b for a, b in zip(list_one, list_two)) else UNEQUAL
+        return (
+            EQUAL
+            if all(list_a == list_b for list_a, list_b in zip(list_one, list_two))
+            else UNEQUAL
+        )
 
     if len(list_one) > len(list_two):
         if index_of(list_one, list_two) != -1:
