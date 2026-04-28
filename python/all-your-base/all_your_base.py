@@ -1,6 +1,3 @@
-import math
-
-
 def rebase(input_base: int, digits: list[int], output_base: int):
     if input_base < 2:
         raise ValueError("input base must be >= 2")
@@ -13,8 +10,7 @@ def rebase(input_base: int, digits: list[int], output_base: int):
         raise ValueError("output base must be >= 2")
 
     input = sum(
-        digit * math.floor(math.pow(input_base, power))
-        for power, digit in enumerate(reversed(digits))
+        digit * input_base**power for power, digit in enumerate(reversed(digits))
     )
 
     if input == 0:
