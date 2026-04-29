@@ -1,16 +1,16 @@
+from dataclasses import dataclass
 from enum import Enum
 
 PREFIX = "What is "
 SUFFIX = "?"
 
 
+@dataclass
 class Operand:
     value: int
 
-    def __init__(self, value: int):
-        self.value = value
 
-
+@dataclass
 class Operation:
     class Type(Enum):
         ADD = 1
@@ -18,8 +18,7 @@ class Operation:
         MUL = 3
         DIV = 4
 
-    def __init__(self, type: Type):
-        self.type = type
+    type: Type
 
 
 OPERATIONS = {
