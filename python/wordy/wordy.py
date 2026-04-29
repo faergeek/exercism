@@ -29,34 +29,34 @@ OPERATIONS = {
 }
 
 
-def answer(question: str):
-    if not question.startswith(PREFIX) or not question.endswith(SUFFIX):
+def tokenize(input: str):
+    if not input.startswith(PREFIX) or not input.endswith(SUFFIX):
         raise ValueError("syntax error")
 
     tokens: list[Operand | Operation] = []
     start = len(PREFIX)
-    question_len = len(question)
+    question_len = len(input)
     while start < question_len:
-        while question[start].isspace():
+        while input[start].isspace():
             start += 1
 
-        if question[start] == "-" or question[start].isnumeric():
-            operand_str = question[start]
+        if input[start] == "-" or input[start].isnumeric():
+            operand_str = input[start]
             start += 1
-            while question[start].isnumeric():
-                operand_str += question[start]
+            while input[start].isnumeric():
+                operand_str += input[start]
                 start += 1
             tokens.append(Operand(int(operand_str)))
-        elif question[start] == SUFFIX:
+        elif input[start] == SUFFIX:
             start += 1
 
             if start != question_len:
                 raise ValueError("syntax error")
         else:
             operation = None
-            for key in OPERATIONS:
-                if question[start:].startswith(key):
-                    operation = OPERATIONS[key]
+            for key, value in OPERATIONS.items():
+                if input[start:].startswith(key):
+                    operation = value
                     start += len(key)
                     break
 
@@ -65,41 +65,46 @@ def answer(question: str):
 
             tokens.append(Operation(operation))
 
-    result = 0
-    start = 0
+    return tokens
+
+
+def evaluate(tokens: list[Operand | Operation]):
+    if not isinstance(tokens[0], Operand):
+        raise ValueError("syntax error")
+
+    result = tokens[0].value
+    start = 1
     tokens_len = len(tokens)
     while start < tokens_len:
-        token = tokens[start]
+        operation = tokens[start]
 
-        if start == 0:
-            if not isinstance(token, Operand):
-                raise ValueError("syntax error")
+        if not isinstance(operation, Operation):
+            raise ValueError("syntax error")
 
-            result = token.value
-        else:
-            if not isinstance(token, Operation):
-                raise ValueError("syntax error")
+        start += 1
 
-            start += 1
+        if start > tokens_len - 1:
+            raise ValueError("syntax error")
 
-            if start > tokens_len - 1:
-                raise ValueError("syntax error")
+        rhs = tokens[start]
 
-            rhs = tokens[start]
+        if not isinstance(rhs, Operand):
+            raise ValueError("syntax error")
 
-            if not isinstance(rhs, Operand):
-                raise ValueError("syntax error")
-
-            match token.type:
-                case Operation.Type.ADD:
-                    result += rhs.value
-                case Operation.Type.SUB:
-                    result -= rhs.value
-                case Operation.Type.MUL:
-                    result *= rhs.value
-                case Operation.Type.DIV:
-                    result /= rhs.value
+        match operation.type:
+            case Operation.Type.ADD:
+                result += rhs.value
+            case Operation.Type.SUB:
+                result -= rhs.value
+            case Operation.Type.MUL:
+                result *= rhs.value
+            case Operation.Type.DIV:
+                result /= rhs.value
 
         start += 1
 
     return result
+
+
+def answer(question: str):
+    return evaluate(tokenize(question))
