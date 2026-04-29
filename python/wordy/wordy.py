@@ -29,25 +29,25 @@ OPERATIONS = {
 }
 
 
-def tokenize(input: str):
-    if not input.startswith(PREFIX) or not input.endswith(SUFFIX):
+def tokenize(question: str):
+    if not question.startswith(PREFIX) or not question.endswith(SUFFIX):
         raise ValueError("syntax error")
 
     tokens: list[Operand | Operation] = []
     start = len(PREFIX)
-    question_len = len(input)
+    question_len = len(question)
     while start < question_len:
-        while input[start].isspace():
+        while question[start].isspace():
             start += 1
 
-        if input[start] == "-" or input[start].isnumeric():
-            operand_str = input[start]
+        if question[start] == "-" or question[start].isnumeric():
+            operand_str = question[start]
             start += 1
-            while input[start].isnumeric():
-                operand_str += input[start]
+            while question[start].isnumeric():
+                operand_str += question[start]
                 start += 1
             tokens.append(Operand(int(operand_str)))
-        elif input[start] == SUFFIX:
+        elif question[start] == SUFFIX:
             start += 1
 
             if start != question_len:
@@ -55,7 +55,7 @@ def tokenize(input: str):
         else:
             operation = None
             for key, value in OPERATIONS.items():
-                if input[start:].startswith(key):
+                if question[start:].startswith(key):
                     operation = value
                     start += len(key)
                     break
