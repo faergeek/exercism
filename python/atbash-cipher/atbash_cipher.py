@@ -1,17 +1,16 @@
-def rotate_char(char: str):
-    return char if char.isnumeric() else chr(ord("z") - ord(char) + ord("a"))
+from string import ascii_lowercase
+
+ENCODING = str.maketrans(ascii_lowercase, ascii_lowercase[::-1])
 
 
 def encode(plain_text: str):
-    chars: list[str] = []
-    for index, char in enumerate(char for char in plain_text.lower() if char.isalnum()):
-        if index != 0 and index % 5 == 0:
-            chars.append(" ")
+    chars = [char for char in plain_text.lower() if char.isalnum()]
 
-        chars.append(rotate_char(char))
-
-    return "".join(chars)
+    return " ".join(
+        "".join(chars[offset : offset + 5]).translate(ENCODING)
+        for offset in range(0, len(chars), 5)
+    )
 
 
 def decode(ciphered_text: str):
-    return "".join(rotate_char(char) for char in ciphered_text if char != " ")
+    return "".join(char for char in ciphered_text if char != " ").translate(ENCODING)
