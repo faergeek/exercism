@@ -1,0 +1,43 @@
+#include "robot_simulator.h"
+
+robot_status_t robot_create(robot_direction_t direction, int x, int y) {
+  return (robot_status_t){.direction = direction,
+                          .position = {
+                              .x = x,
+                              .y = y,
+                          }};
+}
+
+void robot_move(robot_status_t *robot, const char *commands) {
+  const char *it = commands;
+  while (*it != '\0') {
+    switch (*it) {
+    case 'R':
+      robot->direction = (robot->direction + 1) % DIRECTION_MAX;
+      break;
+    case 'L':
+      robot->direction = (DIRECTION_MAX + robot->direction - 1) % DIRECTION_MAX;
+      break;
+    case 'A':
+      switch (robot->direction) {
+      case DIRECTION_NORTH:
+        robot->position.y += 1;
+        break;
+      case DIRECTION_EAST:
+        robot->position.x += 1;
+        break;
+      case DIRECTION_SOUTH:
+        robot->position.y -= 1;
+        break;
+      case DIRECTION_WEST:
+        robot->position.x -= 1;
+        break;
+      default:
+        break;
+      }
+      break;
+    }
+
+    it++;
+  }
+}
