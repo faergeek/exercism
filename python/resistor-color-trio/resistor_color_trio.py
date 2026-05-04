@@ -1,5 +1,3 @@
-import math
-
 COLOR_VALUES = {
     "black": 0,
     "brown": 1,
@@ -30,6 +28,6 @@ def label(colors: list[str]):
     while value > 0 and value % 1000 == 0 and unit_index < len(UNITS) - 1:
         unit_index += 1
         zeroes += 3
-        value /= 1000
+        value //= 1000
 
-    return f"{math.floor(value)} {UNITS[unit_index]}"
+    return f"{value} {UNITS[unit_index]}"
