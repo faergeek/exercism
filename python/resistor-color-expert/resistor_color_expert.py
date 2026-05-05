@@ -26,13 +26,14 @@ COLOR_TO_TOLERANCE = {
 
 
 def resistor_label(colors: list[str]):
+    if len(colors) == 1:
+        return "0 ohms"
+
     value: float
     zeroes: int
     tolerance: str
 
-    if len(colors) == 1:
-        return "0 ohms"
-    elif len(colors) == 4:
+    if len(colors) == 4:
         value = COLOR_TO_VALUE[colors[0]] * 10 + COLOR_TO_VALUE[colors[1]]
         zeroes = COLOR_TO_VALUE[colors[2]]
         tolerance = COLOR_TO_TOLERANCE[colors[3]]
