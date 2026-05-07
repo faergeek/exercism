@@ -1,8 +1,6 @@
 #include "complex_numbers.h"
 #include <math.h>
 
-#define E exp(1)
-
 complex_t c_add(complex_t a, complex_t b) {
   return (complex_t){
       .real = a.real + b.real,
@@ -39,8 +37,6 @@ double c_real(complex_t x) { return x.real; }
 double c_imag(complex_t x) { return x.imag; }
 
 complex_t c_exp(complex_t x) {
-  return (complex_t){
-      .real = pow(E, x.real) * cos(x.imag),
-      .imag = pow(E, x.real) * sin(x.imag),
-  };
+  return (complex_t){.real = exp(x.real) * cos(x.imag),
+                     .imag = exp(x.real) * sin(x.imag)};
 }
