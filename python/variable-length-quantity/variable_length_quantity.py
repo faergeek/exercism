@@ -2,11 +2,11 @@ def encode(numbers: list[int]):
     result: list[int] = []
     for number in reversed(numbers):
         result.append(number & 0x7F)
-        number >>= 7
 
-        while number != 0:
-            result.append(number & 0x7F | 0x80)
-            number >>= 7
+        bits = number >> 7
+        while bits != 0:
+            result.append(bits & 0x7F | 0x80)
+            bits >>= 7
 
     result.reverse()
     return result
