@@ -13,15 +13,19 @@ win_states = [
 ]
 
 
+def did_win(
+    board: list[str],
+    state: tuple[tuple[int, int], tuple[int, int], tuple[int, int]],
+    player: str,
+):
+    return all(
+        board[line_index][col_index] == player for line_index, col_index in state
+    )
+
+
 def gamestate(board: list[str]):
-    x_count = 0
-    o_count = 0
-    for line in board:
-        for cell in line:
-            if cell == "X":
-                x_count += 1
-            elif cell == "O":
-                o_count += 1
+    x_count = sum(line.count("X") for line in board)
+    o_count = sum(line.count("O") for line in board)
 
     turn_diff = x_count - o_count
     if turn_diff > 1:
@@ -33,38 +37,17 @@ def gamestate(board: list[str]):
     x_won = False
     o_won = False
     for state in win_states:
-        cell = board[state[0][0]][state[0][1]]
-        if cell == " ":
-            continue
+        line_index, col_index = state[0]
+        cell = board[line_index][col_index]
 
-        won = True
-        for line_index, col_index in state:
-            if board[line_index][col_index] != cell:
-                won = False
-                break
-
-        if won:
-            if cell == "X":
-                x_won = True
-            else:
-                o_won = True
+        if cell == "X":
+            x_won = x_won or did_win(board, state, "X")
+        elif cell == "O":
+            o_won = o_won or did_win(board, state, "O")
 
     if x_won and o_won:
         raise ValueError(
             "Impossible board: game should have ended after the game was won"
         )
 
-    if x_won or o_won:
-        return "win"
-
-    draw = True
-    for line in board:
-        for cell in line:
-            if cell == " ":
-                draw = False
-                break
-
-    if draw:
-        return "draw"
-
-    return "ongoing"
+    return "win" if x_won or o_won else "ongoing" if x_count + o_count < 9 else "draw"
