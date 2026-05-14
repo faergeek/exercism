@@ -5,7 +5,7 @@ namespace robot_name {
 std::unordered_set<std::string> robot::used_names;
 
 std::string robot::generate_unique_name() {
-  std::string result;
+  std::string result = "";
 
   do {
     result.push_back('A' + std::rand() % 26);
