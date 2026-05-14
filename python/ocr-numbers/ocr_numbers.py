@@ -46,6 +46,6 @@ def convert(input_grid: list[str]):
         if result:
             result += ","
 
-        result += "".join(map(str, line))
+        result += "".join(line)
 
     return result
