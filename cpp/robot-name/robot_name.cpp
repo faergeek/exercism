@@ -8,6 +8,7 @@ std::string robot::generate_unique_name() {
   std::string result;
 
   do {
+    result = "";
     result.push_back('A' + std::rand() % 26);
     result.push_back('A' + std::rand() % 26);
     result.push_back('0' + std::rand() % 10);
