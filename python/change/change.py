@@ -4,11 +4,11 @@ def find_fewest_coins(coins: list[int], target: int) -> list[int]:
 
     solutions: list[dict[int, int] | None] = [{}]
     reversed_coins = sorted((coin for coin in coins if coin <= target), reverse=True)
-    for p in range(1, target + 1):
+    for partial_target in range(1, target + 1):
         min_solution = None
         for coin in reversed_coins:
-            if coin <= p:
-                partial_solution = solutions[p - coin]
+            if coin <= partial_target:
+                partial_solution = solutions[partial_target - coin]
 
                 if partial_solution is not None and (
                     min_solution is None
