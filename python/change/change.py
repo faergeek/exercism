@@ -1,56 +1,31 @@
-def find_fewest_coins0(
-    coins: list[int],
-    target: int,
-    candidate: dict[int, int],
-    best_candidate: dict[int, int] | None = None,
-) -> dict[int, int] | None:
-    if target == 0:
-        return best_candidate
-
-    if best_candidate and sum(candidate.values()) > sum(best_candidate.values()):
-        return best_candidate
-
-    for index, coin in enumerate(coins):
-        if coin > target:
-            continue
-
-        if coin not in candidate:
-            candidate[coin] = 0
-
-        candidate[coin] += 1
-
-        if coin < target:
-            nested_candidate = find_fewest_coins0(
-                coins[index:], target - coin, candidate, best_candidate
-            )
-
-            if nested_candidate and (
-                not best_candidate
-                or sum(nested_candidate.values()) < sum(best_candidate.values())
-            ):
-                best_candidate = nested_candidate.copy()
-        else:
-            if not best_candidate or sum(candidate.values()) < sum(
-                best_candidate.values()
-            ):
-                best_candidate = candidate.copy()
-
-        candidate[coin] -= 1
-
-    return best_candidate
-
-
 def find_fewest_coins(coins: list[int], target: int) -> list[int]:
     if target < 0:
         raise ValueError("target can't be negative")
 
-    if target == 0:
-        return []
-
+    solutions: list[dict[int, int] | None] = [{}]
     reversed_coins = sorted((coin for coin in coins if coin <= target), reverse=True)
-    solution = find_fewest_coins0(reversed_coins, target, {})
+    for p in range(1, target + 1):
+        min_solution = None
+        for coin in reversed_coins:
+            if coin <= p:
+                partial_solution = solutions[p - coin]
 
-    if not solution:
+                if partial_solution is not None and (
+                    min_solution is None
+                    or sum(partial_solution.values()) + 1 < sum(min_solution.values())
+                ):
+                    min_solution = partial_solution.copy()
+
+                    if coin in min_solution:
+                        min_solution[coin] += 1
+                    else:
+                        min_solution[coin] = 1
+
+        solutions.append(min_solution)
+
+    solution = solutions[target]
+
+    if solution is None:
         raise ValueError("can't make target with given coins")
 
     result: list[int] = []
