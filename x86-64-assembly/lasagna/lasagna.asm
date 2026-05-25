@@ -1,30 +1,32 @@
+EXPECTED_MINUTES_IN_OVEN equ 40
+MINUTES_PER_LAYER equ 2
+
 section .text
 
 global expected_minutes_in_oven
 
 expected_minutes_in_oven:
-	mov rax, 40
+	mov rax, EXPECTED_MINUTES_IN_OVEN
 	ret
 
 global remaining_minutes_in_oven
 
 remaining_minutes_in_oven:
-	mov rax, 40
-	sub rax, rdi
+	call expected_minutes_in_oven
+	sub  rax, rdi
 	ret
 
 global preparation_time_in_minutes
 
 preparation_time_in_minutes:
-	mov  rax, rdi
-	imul rax, 2
+	lea rax, [rdi * 2]
 	ret
 
 global elapsed_time_in_minutes
 
 elapsed_time_in_minutes:
 	call preparation_time_in_minutes
-	add  eax, esi
+	add  rax, rsi
 	ret
 
 %ifidn  __OUTPUT_FORMAT__, elf64
