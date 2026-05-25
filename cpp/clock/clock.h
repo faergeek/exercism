@@ -6,13 +6,12 @@ namespace date_independent {
 
 class clock {
 private:
-  int hour;
-  int minute;
+  int minutes;
 
 public:
   static clock at(int hour, int minute);
 
-  clock(int hour, int minute);
+  clock(int minutes);
   clock plus(int minutes);
 
   operator std::string() const;
