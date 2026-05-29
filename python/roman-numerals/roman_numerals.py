@@ -11,8 +11,7 @@ numerals = [
 
 def roman(number: int):
     result: list[str] = []
-    for index in range(len(numerals)):
-        numeral, value = numerals[index]
+    for index, (numeral, value) in enumerate(numerals):
         quotient, number = divmod(number, value)
 
         if quotient > 3:
