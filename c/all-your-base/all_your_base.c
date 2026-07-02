@@ -3,7 +3,7 @@
 
 size_t rebase(int8_t digits[DIGITS_ARRAY_SIZE], int16_t input_base,
               int16_t output_base, size_t input_length) {
-  if (input_length < 1 || input_base <= 1 || output_base <= 1) {
+  if (input_length == 0 || input_base < 2 || output_base < 2) {
     return 0;
   }
 
