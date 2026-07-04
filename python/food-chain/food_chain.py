@@ -34,8 +34,8 @@ def recite(start_verse: int, end_verse: int):
             if verse > 1:
                 result.append(openings[verse - 2])
 
-            for i in range(len(endings) - (verse - 1), len(endings)):
-                result.append(endings[i])
+            for index in range(len(endings) - (verse - 1), len(endings)):
+                result.append(endings[index])
 
             result.append("I don't know why she swallowed the fly. Perhaps she'll die.")
 
