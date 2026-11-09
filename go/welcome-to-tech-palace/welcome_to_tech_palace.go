@@ -18,12 +18,5 @@ func AddBorder(welcomeMsg string, numStarsPerLine int) string {
 
 // CleanupMessage cleans up an old marketing message.
 func CleanupMessage(oldMsg string) string {
-	msg := new(strings.Builder)
-	for _, r := range oldMsg {
-		if r != '*' {
-			msg.WriteRune(r)
-		}
-	}
-
-	return strings.TrimSpace(msg.String())
+	return strings.TrimSpace(strings.ReplaceAll(oldMsg, "*", ""))
 }
