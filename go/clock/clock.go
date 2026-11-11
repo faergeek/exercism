@@ -3,36 +3,36 @@ package clock
 import "fmt"
 
 type Clock struct {
+	hours   int
 	minutes int
 }
 
-const minutesInDay = 24 * 60
+const hoursInDay = 24
+const minutesInHour = 60
+const minutesInDay = hoursInDay * minutesInHour
 
-func fromMinutes(m int) Clock {
+func New(h, m int) Clock {
+	m = h*minutesInHour + m
 	m %= minutesInDay
 
 	if m < 0 {
 		m += minutesInDay
 	}
 
-	return Clock{minutes: m}
-}
-
-func New(h, m int) Clock {
-	return fromMinutes(h*60 + m)
+	return Clock{hours: m / 60, minutes: m % 60}
 }
 
 func (c Clock) Add(m int) Clock {
-	return fromMinutes(c.minutes + m)
+	return New(c.hours, c.minutes+m)
 }
 
 func (c Clock) Subtract(m int) Clock {
-	return fromMinutes(c.minutes - m)
+	return New(c.hours, c.minutes-m)
 }
 
 func (c Clock) String() string {
 	return fmt.Sprintf(
 		"%02d:%02d",
-		c.minutes/60, c.minutes%60,
+		c.hours, c.minutes,
 	)
 }
