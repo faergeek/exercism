@@ -21,13 +21,13 @@ func Number(phoneNumber string) (string, error) {
 			continue
 		}
 
-		if ndigits == 0 && b < '2' {
-			return "", ErrAreaCode
-		}
+		// if ndigits == 0 && b < '2' {
+		// 	return "", ErrAreaCode
+		// }
 
-		if ndigits == 3 && b < '2' {
-			return "", ErrExchangeCode
-		}
+		// if ndigits == 3 && b < '2' {
+		// 	return "", ErrExchangeCode
+		// }
 
 		if ndigits > 9 {
 			return "", ErrTooManyDigits
@@ -39,6 +39,14 @@ func Number(phoneNumber string) (string, error) {
 
 	if ndigits != 10 {
 		return "", ErrTooFewDigits
+	}
+
+	if digits[0] < '2' {
+		return "", ErrAreaCode
+	}
+
+	if digits[3] < '2' {
+		return "", ErrExchangeCode
 	}
 
 	return string(digits[:]), nil
