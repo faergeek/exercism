@@ -12,14 +12,20 @@ const minutesInHour = 60
 const minutesInDay = hoursInDay * minutesInHour
 
 func New(h, m int) Clock {
-	m = h*minutesInHour + m
-	m %= minutesInDay
+	h += m / minutesInHour
+	m %= minutesInHour
 
 	if m < 0 {
-		m += minutesInDay
+		h--
+		m += minutesInHour
 	}
 
-	return Clock{hours: m / 60, minutes: m % 60}
+	h %= hoursInDay
+	if h < 0 {
+		h += hoursInDay
+	}
+
+	return Clock{hours: h, minutes: m}
 }
 
 func (c Clock) Add(m int) Clock {
