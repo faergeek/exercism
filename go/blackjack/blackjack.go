@@ -37,31 +37,21 @@ func ParseCard(card string) int {
 // FirstTurn returns the decision for the first turn, given two cards of the
 // player and one card of the dealer.
 func FirstTurn(card1, card2, dealerCard string) string {
-	if card1 == "ace" && card2 == "ace" {
-		return "P"
-	}
+	myScore := ParseCard(card1) + ParseCard(card2)
+	dealerScore := ParseCard(dealerCard)
 
-	total := ParseCard(card1) + ParseCard(card2)
-	dealerTotal := ParseCard(dealerCard)
-	if total == 21 {
-		if dealerTotal < 10 {
+	switch {
+	case myScore == 22:
+		return "P"
+	case myScore == 21:
+		if dealerScore < 10 {
 			return "W"
 		}
 
 		return "S"
-	}
-
-	if total >= 17 {
+	case myScore >= 17 || myScore >= 12 && dealerScore < 7:
 		return "S"
-	}
-
-	if total >= 12 {
-		if dealerTotal < 7 {
-			return "S"
-		}
-
+	default:
 		return "H"
 	}
-
-	return "H"
 }
