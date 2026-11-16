@@ -35,9 +35,11 @@ func (n *Node[T]) Prev() *Node[T] {
 func (ll *List[T]) Unshift(v T) {
 	newNode := &Node[T]{next: ll.first, Value: v}
 	if ll.first == nil {
-		ll.first, ll.last = newNode, newNode
+		ll.first = newNode
+		ll.last = newNode
 	} else {
-		ll.first, ll.first.prev = newNode, newNode
+		ll.first.prev = newNode
+		ll.first = newNode
 	}
 }
 
@@ -45,10 +47,12 @@ func (ll *List[T]) Unshift(v T) {
 func (ll *List[T]) Push(v T) {
 	if ll.last == nil {
 		newNode := &Node[T]{Value: v}
-		ll.first, ll.last = newNode, newNode
+		ll.first = newNode
+		ll.last = newNode
 	} else {
 		newNode := &Node[T]{prev: ll.last, Value: v}
-		ll.last, ll.last.next = newNode, newNode
+		ll.last.next = newNode
+		ll.last = newNode
 	}
 }
 
@@ -92,23 +96,10 @@ func (ll *List[T]) Pop() (T, error) {
 
 // Reverse reverses the given linked list in-place.
 func (ll *List[T]) Reverse() {
-	var first *Node[T]
-
-	node := ll.first
-	for node != nil {
-		next := node.next
-		node.prev = nil
-		node.next = first
-
-		if first != nil {
-			first.prev = node
-		}
-
-		first = node
-		node = next
+	for node := ll.first; node != nil; node = node.prev {
+		node.prev, node.next = node.next, node.prev
 	}
-
-	ll.first, ll.last = first, ll.first
+	ll.first, ll.last = ll.last, ll.first
 }
 
 // First returns a pointer to the first node in the linked list (head).
