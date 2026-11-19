@@ -1,15 +1,19 @@
 package pov
 
 type Tree struct {
-	value    string
-	parent   *Tree
-	next     *Tree
-	children []*Tree
+	value  string
+	parent *Tree
+	first  *Tree
+	next   *Tree
 }
 
 // New creates and returns a new Tree with the given root value and children.
 func New(value string, children ...*Tree) *Tree {
-	tr := &Tree{value: value, children: children}
+	tr := &Tree{value: value}
+
+	if len(children) != 0 {
+		tr.first = children[0]
+	}
 
 	for i, child := range children {
 		child.parent = tr
@@ -29,7 +33,13 @@ func (tr *Tree) Value() string {
 
 // Children returns a slice containing the children of a tree.
 func (tr *Tree) Children() []*Tree {
-	return tr.children
+	var children []*Tree
+
+	for node := tr.first; node != nil; node = node.next {
+		children = append(children, node)
+	}
+
+	return children
 }
 
 // String describes a tree in a compact S-expression format.
@@ -61,16 +71,18 @@ func findPath(tr *Tree, value string) []*Tree {
 			return p
 		}
 
-		if len(node.children) != 0 {
+		if node.first != nil {
 			depth++
-			node = node.children[0]
+			node = node.first
 		} else if node.next != nil {
 			node = node.next
-		} else if node.parent != nil {
+		} else {
+			if node.parent == nil {
+				break
+			}
+
 			depth--
 			node = node.parent.next
-		} else {
-			node = node.parent
 		}
 	}
 
@@ -84,21 +96,38 @@ func (tr *Tree) FromPov(from string) *Tree {
 		return nil
 	}
 
-	for i, node := range p[:len(p)-1] {
-		child := p[i+1]
+	for i, pathNode := range p[:len(p)-1] {
+		var newParent *Tree
+		if i > 0 {
+			newParent = p[i-1]
+		}
 
-		for j := 0; j < len(node.children); j++ {
-			if node.children[j] == child {
-				lastIndex := len(node.children) - 1
-				node.children[j] = node.children[lastIndex]
-				node.children = node.children[:lastIndex]
-				child.children = append(child.children, node)
-				break
+		nextPathNode := p[i+1]
+
+		if pathNode.first == nextPathNode {
+			pathNode.parent = newParent
+			pathNode.first = pathNode.first.next
+			pathNode.next = nextPathNode.first
+
+			nextPathNode.first = pathNode
+		} else {
+			for prev := pathNode.first; prev != nil; prev = prev.next {
+				if prev.next == nextPathNode {
+					pathNode.parent = newParent
+					pathNode.next = nextPathNode.first
+
+					prev.next = prev.next.next
+					nextPathNode.first = pathNode
+					break
+				}
 			}
 		}
 	}
 
-	return p[len(p)-1]
+	result := p[len(p)-1]
+	result.parent = nil
+
+	return result
 }
 
 // PathTo returns the shortest path between two nodes in the tree.
