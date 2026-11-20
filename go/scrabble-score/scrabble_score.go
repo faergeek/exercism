@@ -1,28 +1,16 @@
 package scrabblescore
 
+var arr = [26]int{1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10}
+
 func Score(word string) int {
 	score := 0
 
-	for _, r := range word {
-		if r >= 'a' && r <= 'z' {
-			r = r - 'a' + 'A'
-		}
-
-		switch r {
-		case 'A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T':
-			score += 1
-		case 'D', 'G':
-			score += 2
-		case 'B', 'C', 'M', 'P':
-			score += 3
-		case 'F', 'H', 'V', 'W', 'Y':
-			score += 4
-		case 'K':
-			score += 5
-		case 'J', 'X':
-			score += 8
-		case 'Q', 'Z':
-			score += 10
+	for i := 0; i < len(word); i++ {
+		b := word[i]
+		if b >= 'a' && b <= 'z' {
+			score += arr[b-'a']
+		} else {
+			score += arr[b-'A']
 		}
 	}
 
