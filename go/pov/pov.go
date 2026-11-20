@@ -89,6 +89,24 @@ func findPath(tr *Tree, value string) []*Tree {
 	return nil
 }
 
+func (tr *Tree) removeChild(child *Tree) {
+	for it := &tr.first; *it != nil; it = &(*it).next {
+		if (*it) == child {
+			(*it) = child.next
+			break
+		}
+	}
+
+	child.parent = nil
+	child.next = nil
+}
+
+func (tr *Tree) addChild(child *Tree) {
+	child.parent = tr
+	child.next = tr.first
+	tr.first = child
+}
+
 // FromPov returns the pov from the node specified in the argument.
 func (tr *Tree) FromPov(from string) *Tree {
 	p := findPath(tr, from)
@@ -96,70 +114,27 @@ func (tr *Tree) FromPov(from string) *Tree {
 		return nil
 	}
 
-	for i, pathNode := range p[:len(p)-1] {
-		var newParent *Tree
-		if i > 0 {
-			newParent = p[i-1]
-		}
+	for i := 0; i < len(p)-1; i++ {
+		parent := p[i]
+		child := p[i+1]
 
-		nextPathNode := p[i+1]
-
-		if pathNode.first == nextPathNode {
-			pathNode.parent = newParent
-			pathNode.first = pathNode.first.next
-			pathNode.next = nextPathNode.first
-
-			nextPathNode.first = pathNode
-		} else {
-			for prev := pathNode.first; prev != nil; prev = prev.next {
-				if prev.next == nextPathNode {
-					pathNode.parent = newParent
-					pathNode.next = nextPathNode.first
-
-					prev.next = prev.next.next
-					nextPathNode.first = pathNode
-					break
-				}
-			}
-		}
+		child.addChild(parent)
+		parent.removeChild(child)
 	}
 
-	result := p[len(p)-1]
-	result.parent = nil
-
-	return result
+	return p[len(p)-1]
 }
 
 // PathTo returns the shortest path between two nodes in the tree.
 func (tr *Tree) PathTo(from, to string) []string {
-	fromPath := findPath(tr, from)
-	toPath := findPath(tr, to)
-
-	lca := -1
-	for i := range min(len(fromPath), len(toPath)) {
-		if fromPath[i] != toPath[i] {
-			break
-		}
-
-		lca = i
-	}
-
-	if lca == -1 {
-		return nil
-	}
-
-	result := make([]string, len(fromPath)+len(toPath))
+	p := findPath(tr.FromPov(from), to)
+	result := make([]string, len(p))
 	l := 0
 
-	for j := len(fromPath) - 1; j > lca; j-- {
-		result[l] = fromPath[j].value
+	for i := range p {
+		result[l] = p[i].value
 		l++
 	}
 
-	for j := lca; j < len(toPath); j++ {
-		result[l] = toPath[j].value
-		l++
-	}
-
-	return result[:l]
+	return result
 }
