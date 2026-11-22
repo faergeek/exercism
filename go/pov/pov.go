@@ -57,48 +57,15 @@ func (tr *Tree) String() string {
 	return "(" + result + ")"
 }
 
-func findPath(tr *Tree, value string) []*Tree {
-	depth := 1
-
-	node := tr
-	for node != nil {
-		if node.value == value {
-			p := make([]*Tree, depth)
-			for i := len(p) - 1; i > -1; i-- {
-				p[i] = node
-				node = node.parent
-			}
-			return p
-		}
-
-		if node.first != nil {
-			depth++
-			node = node.first
-		} else if node.next != nil {
-			node = node.next
-		} else {
-			if node.parent == nil {
-				break
-			}
-
-			depth--
-			node = node.parent.next
-		}
-	}
-
-	return nil
-}
-
 func (tr *Tree) removeChild(child *Tree) {
 	for it := &tr.first; *it != nil; it = &(*it).next {
 		if (*it) == child {
 			(*it) = child.next
+			child.next = nil
+			child.parent = nil
 			break
 		}
 	}
-
-	child.parent = nil
-	child.next = nil
 }
 
 func (tr *Tree) addChild(child *Tree) {
@@ -107,33 +74,72 @@ func (tr *Tree) addChild(child *Tree) {
 	tr.first = child
 }
 
+func (tr *Tree) find(value string, depth *int) *Tree {
+	if depth == nil {
+		var d int
+		depth = &d
+	} else {
+	}
+
+	*depth = 1
+
+	for {
+		if tr == nil {
+			return nil
+		}
+
+		if tr.value == value {
+			return tr
+		}
+
+		if tr.first != nil {
+			*depth++
+			tr = tr.first
+		} else if tr.next != nil {
+			tr = tr.next
+		} else if tr.parent != nil {
+			*depth--
+			tr = tr.parent.next
+		} else {
+			return nil
+		}
+	}
+}
+
 // FromPov returns the pov from the node specified in the argument.
 func (tr *Tree) FromPov(from string) *Tree {
-	p := findPath(tr, from)
-	if len(p) == 0 {
+	root := tr.find(from, nil)
+	if root == nil {
 		return nil
 	}
 
-	for i := 0; i < len(p)-1; i++ {
-		parent := p[i]
-		child := p[i+1]
+	for child, parent := root, root.parent; parent != nil; {
+		grandparent := parent.parent
+		if grandparent != nil {
+			grandparent.removeChild(parent)
+		}
 
-		child.addChild(parent)
 		parent.removeChild(child)
+		child.addChild(parent)
+
+		child = parent
+		parent = grandparent
 	}
 
-	return p[len(p)-1]
+	return root
 }
 
 // PathTo returns the shortest path between two nodes in the tree.
 func (tr *Tree) PathTo(from, to string) []string {
-	p := findPath(tr.FromPov(from), to)
-	result := make([]string, len(p))
-	l := 0
+	depth := 1
+	toNode := tr.FromPov(from).find(to, &depth)
+	if toNode == nil {
+		return nil
+	}
 
-	for i := range p {
-		result[l] = p[i].value
-		l++
+	result := make([]string, depth)
+	for i := len(result) - 1; toNode != nil; i, toNode = i-1, toNode.parent {
+		result[i] = toNode.value
 	}
 
 	return result
