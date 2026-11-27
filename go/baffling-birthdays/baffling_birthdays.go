@@ -22,17 +22,10 @@ func SharedBirthday(dates []time.Time) bool {
 
 func RandomBirthdates(size int) []time.Time {
 	result := make([]time.Time, size)
+	base := time.Date(1999, 1, 1, 0, 0, 0, 0, &time.Location{})
 
 	for i := range size {
-		date := time.Unix(rand.Int63(), 0)
-		year := date.Year()
-
-		for year%4 == 0 && year%100 != 0 || year%400 == 0 {
-			date = time.Unix(rand.Int63(), 0)
-			year = date.Year()
-		}
-
-		result[i] = date
+		result[i] = base.Add(time.Hour * 24 * time.Duration(rand.Intn(365)))
 	}
 
 	return result
